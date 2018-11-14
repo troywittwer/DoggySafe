@@ -36,7 +36,7 @@ public class DoggySafe {
     //System.out.println("Mouse info: " + MouseInfo.getPointerInfo().getLocation());
     Scanner in = new Scanner(System.in);
     Robot safeBot = new Robot();
-    safeBot.setAutoDelay(1);
+    //safeBot.setAutoDelay(1);
 
     /**
      * the password just determines which version of the loop will be used. If you supply the
@@ -75,7 +75,7 @@ public class DoggySafe {
     int combos = 999; // 999 is easier to make into a string than 000.
 
     long t = System.currentTimeMillis();
-    long end = t + 30000;
+    long end = t + 5000;
 
     /**
      * This section is for the 3 golden richie figurines. Requires correct
@@ -92,9 +92,11 @@ public class DoggySafe {
      * 96 - 105.
      */
     if (userPassword.equalsIgnoreCase("Doggydoodle")) {
+      int digit1, digit2, digit3, digit4;
+
       while (System.currentTimeMillis() < end) {
 
-        int digit1, digit2, digit3, digit4;
+
         String currentNum = Integer.toString(combos); // Stored in ArrayList for duplicate checking
 
         // Thousands
@@ -128,23 +130,27 @@ public class DoggySafe {
         safeBot.keyPress(KeyEvent.VK_ENTER);
         safeBot.keyRelease(KeyEvent.VK_ENTER);
 
-        /**
-         * Because the Enter key requires communication with the server to check whether an attempt
-         * was correct or not, a delay is required to make sure keys are not entered during the
-         * confirmation process.
-         */
-        safeBot.delay(250);
+
+        // Because the Enter key requires communication with the server to check whether an attempt
+        // was correct or not, a delay is required to make sure keys are not entered during the
+        // confirmation process.
+
+        //safeBot.delay(200);
 
         randomValues.add(currentNum);
         combos--;
       }
+      printMessage("STOP");
+
+      System.out.println("While loop finished");
     }
     // This section is for wooden richie figurines. Type the incorrect
     // password to activate this section and make sure the for loop has the
     // correct amount of iterations.
     else {
+      int digit1, digit2, digit3, digit4;
+
       for (int i = 0; i < 3; i++) {
-        int digit1, digit2, digit3, digit4;
         String currentNum = Integer.toString(combos); // used to determine any repeats
 
         // Thousands
@@ -185,42 +191,42 @@ public class DoggySafe {
       }
     }
 
-        
+
        /*
         //for (int digit1 = 0; digit1 < 1; digit1++){
             for (int digit2 = 0; digit2 < 10; digit2++){
                 for (int digit3 = 0; digit3 < 10; digit3++){
                     for (int digit4 = 0; digit4 < 10; digit4++){
-                        
+
                         // These four objects represent which key will be
                         // pressed for each of the four numbers.
                         doggoKey puppers1 = new doggoKey(digit1);
                         doggoKey puppers2 = new doggoKey(digit2);
                         doggoKey puppers3 = new doggoKey(digit3);
                         doggoKey puppers4 = new doggoKey(digit4);
-                        
+
                         // Thousands Place
                         safeBot.keyPress(puppers1.getKeyValue());
                         safeBot.keyRelease(puppers1.getKeyValue());
-                            
+
                         // Hundreds Place
                         safeBot.keyPress(puppers2.getKeyValue());
                         safeBot.keyRelease(puppers2.getKeyValue());
-                            
+
                         // Tens Place
                         safeBot.keyPress(puppers3.getKeyValue());
                         safeBot.keyRelease(puppers3.getKeyValue());
-                            
+
                         // Ones Place
                         safeBot.keyPress(puppers4.getKeyValue());
                         safeBot.keyRelease(puppers4.getKeyValue());
-                            
+
                         // Enter button
                         safeBot.keyPress(KeyEvent.VK_ENTER);
                         safeBot.keyRelease(KeyEvent.VK_ENTER);
-                            
+
                         combos++;
-                            
+
                     }// end of ones
                 }// end of tens
             }// end of hundreds
@@ -238,5 +244,45 @@ public class DoggySafe {
         + repeatFinder.size() + " unique combinations were entered.");
 
     in.close();
+  }
+
+  /**
+   * This method is designed to troubleshoot the strange output during a test run with no auto delay
+   * @param message a string message passed as an argument to print to the screen
+   * @throws AWTException
+   */
+  public static void printMessage(String message)throws AWTException{
+    Robot messagePrinter = new Robot();
+
+    // This for loop prints the actual message
+    for (int i = 0; i < message.length(); i++){
+      //Need to find something that reutrns the ASCII value of the character.
+      // Not sure if charAt(i) fulfills that requirement.
+      messagePrinter.keyPress(message.charAt(i));
+      messagePrinter.keyRelease(message.charAt(i));
+    }
+    // This for loop prints a series of enter key strokes to make it easier to spot the message
+    for (int i = 0; i < 10; i++){
+      messagePrinter.keyPress(KeyEvent.VK_ENTER);
+      messagePrinter.keyRelease(KeyEvent.VK_ENTER);
+    }
+  }
+
+  public static void printAttemptNumber(int attemptNum) throws AWTException{
+    Robot attemptBot = new Robot();
+
+    String attemptString = Integer.toString(attemptNum);
+
+    for (int i = 0; i < attemptString.length(); i++){
+      attemptBot.keyPress(attemptString.charAt(i));
+      attemptBot.keyRelease(attemptString.charAt(i));
+    }
+
+    attemptBot.keyPress(KeyEvent.VK_COLON);
+    attemptBot.keyRelease(KeyEvent.VK_COLON);
+    attemptBot.keyPress(KeyEvent.VK_SPACE);
+    attemptBot.keyRelease(KeyEvent.VK_SPACE);
+
+    //attemptBot.keyPress(KeyEvent.VK_)
   }
 }
