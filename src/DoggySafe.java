@@ -45,7 +45,6 @@ public class DoggySafe {
     System.out.print("Please enter the password: ");
     String userPassword = in.nextLine();
 
-
     /**
      * Move the mouse pointer to the side of the screen containing either Notepad (for testing)
      * or the Nox emulator playing MapleStory M. After mouse has been moved, the Robot object will
@@ -82,19 +81,22 @@ public class DoggySafe {
      * This section is for the 3 golden richie figurines. Requires correct
      * password input.
      */
+
+    /**
+     * The loop performs 5 button inputs: four numbers and one enter button.
+     *
+     * My random object chooses an integer between 0 - 9, that value is stored in the String
+     * object (which is stored in the ArrayList at the end of the loop iteration), then 96 is
+     * added to the integer storing the random integer. 96 is added because the KeyEvent for
+     * VK_NUMPAD0 happens to be 96. KeyEvent.VK_NUMPAD0 - KeyEvent.VK_NUMPAD9 would then become
+     * 96 - 105.
+     */
     if (userPassword.equalsIgnoreCase("Doggydoodle")) {
       while (System.currentTimeMillis() < end) {
+
         int digit1, digit2, digit3, digit4;
         String currentNum = Integer.toString(combos); // Stored in ArrayList for duplicate checking
 
-        /**
-         * The loop performs 5 button inputs: four numbers and one enter button.
-         *
-         * My random object chooses an integer between 0 - 9, that value is stored in the String
-         * object (which is stored in the ArrayList at the end of the loop iteration), then 96 is
-         * added to the integer storing the random integer. 96 is added because the KeyEvent for
-         * numpad 0. 0 - 9 would then become 96 - 105.
-         */
         // Thousands
         digit1 = rando.nextInt(10);
         currentNum += Integer.toString(digit1);
@@ -131,7 +133,7 @@ public class DoggySafe {
          * was correct or not, a delay is required to make sure keys are not entered during the
          * confirmation process.
          */
-        safeBot.delay(200);
+        safeBot.delay(250);
 
         randomValues.add(currentNum);
         combos--;
@@ -182,7 +184,7 @@ public class DoggySafe {
         combos--;
       }
     }
-        
+
         
        /*
         //for (int digit1 = 0; digit1 < 1; digit1++){
