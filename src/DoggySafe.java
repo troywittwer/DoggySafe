@@ -36,7 +36,7 @@ public class DoggySafe {
     //System.out.println("Mouse info: " + MouseInfo.getPointerInfo().getLocation());
     Scanner in = new Scanner(System.in);
     Robot safeBot = new Robot();
-    //safeBot.setAutoDelay(1);
+    safeBot.setAutoDelay(1);
 
     /**
      * the password just determines which version of the loop will be used. If you supply the
@@ -72,17 +72,19 @@ public class DoggySafe {
      * This combos variable is only used if I'm willing to stay within my 6,000 - 6,999 range
      * (this range was assigned by my guild, but no one would know if I'm following it, anyway).
      */
-    int combos = 999; // 999 is easier to make into a string than 000.
+    int combos = 1; //
 
     long t = System.currentTimeMillis();
-    long end = t + 5000;
+    long end = t + 30000; // three zeros are required since time is told in milliseconds
+
+    /**
+     *
+     */
 
     /**
      * This section is for the 3 golden richie figurines. Requires correct
      * password input.
-     */
-
-    /**
+     *
      * The loop performs 5 button inputs: four numbers and one enter button.
      *
      * My random object chooses an integer between 0 - 9, that value is stored in the String
@@ -95,7 +97,8 @@ public class DoggySafe {
       int digit1, digit2, digit3, digit4;
 
       while (System.currentTimeMillis() < end) {
-
+        // Comment out this line unless testing.
+        //printAttemptNumber(combos);
 
         String currentNum = Integer.toString(combos); // Stored in ArrayList for duplicate checking
 
@@ -127,22 +130,22 @@ public class DoggySafe {
         safeBot.keyPress(digit4);
         safeBot.keyRelease(digit4);
 
+        // Enter button
         safeBot.keyPress(KeyEvent.VK_ENTER);
         safeBot.keyRelease(KeyEvent.VK_ENTER);
-
 
         // Because the Enter key requires communication with the server to check whether an attempt
         // was correct or not, a delay is required to make sure keys are not entered during the
         // confirmation process.
 
-        //safeBot.delay(200);
+        safeBot.delay(10);
 
         randomValues.add(currentNum);
-        combos--;
+        combos++;
       }
-      printMessage("STOP");
+      //printMessage("STOP");
 
-      System.out.println("While loop finished");
+      //System.out.println("While loop finished");
     }
     // This section is for wooden richie figurines. Type the incorrect
     // password to activate this section and make sure the for loop has the
@@ -181,6 +184,7 @@ public class DoggySafe {
         safeBot.keyPress(digit4);
         safeBot.keyRelease(digit4);
 
+        // Enter button
         safeBot.keyPress(KeyEvent.VK_ENTER);
         safeBot.keyRelease(KeyEvent.VK_ENTER);
 
@@ -256,8 +260,8 @@ public class DoggySafe {
 
     // This for loop prints the actual message
     for (int i = 0; i < message.length(); i++){
-      //Need to find something that reutrns the ASCII value of the character.
-      // Not sure if charAt(i) fulfills that requirement.
+      // charAt(i) returns a char value, which can be cast as an int). VK_* stores letters according
+      // to their ASCII value.
       messagePrinter.keyPress(message.charAt(i));
       messagePrinter.keyRelease(message.charAt(i));
     }
@@ -268,21 +272,27 @@ public class DoggySafe {
     }
   }
 
+  /**
+   * This method is designed to provide line numbers in the Notepad document during testing.
+   * @param attemptNum
+   * @throws AWTException
+   */
   public static void printAttemptNumber(int attemptNum) throws AWTException{
     Robot attemptBot = new Robot();
 
     String attemptString = Integer.toString(attemptNum);
+    int[] attemptDigits = new int[attemptString.length()];
 
+    // This loop prints allows the Robot object to print the line number.
     for (int i = 0; i < attemptString.length(); i++){
-      attemptBot.keyPress(attemptString.charAt(i));
-      attemptBot.keyRelease(attemptString.charAt(i));
-    }
+      attemptDigits[i] = Integer.parseInt(attemptString.substring(i, i+1));
+      attemptDigits[i] += 96;
 
-    attemptBot.keyPress(KeyEvent.VK_COLON);
-    attemptBot.keyRelease(KeyEvent.VK_COLON);
+      attemptBot.keyPress(attemptDigits[i]);
+      attemptBot.keyRelease(attemptDigits[i]);
+    }
+    // prints " " to deliniate the line number and actual combination attempt.
     attemptBot.keyPress(KeyEvent.VK_SPACE);
     attemptBot.keyRelease(KeyEvent.VK_SPACE);
-
-    //attemptBot.keyPress(KeyEvent.VK_)
   }
 }
